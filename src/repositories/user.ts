@@ -1,10 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { ICreateUser, IUser } from '../entities'
 
-export interface IRepositoryUser {
-  createUser(user: { username: string; password: string }): Promise<IUser>
-  getUser(username: string): Promise<IUser>
-}
+import { IRepositoryUser } from '.'
+import { ICreateUser, IUser } from '../entities'
 
 export function newRepositoryUser(db: PrismaClient): IRepositoryUser {
   return new RepositoryUser(db)

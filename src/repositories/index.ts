@@ -1,4 +1,4 @@
-import { ICreateTodo, ITodo } from '../entities'
+import { ICreateTodo, ICreateUser, ITodo, IUser } from '../entities'
 
 export interface IRepositoryTodo {
   createTodo(arg: ICreateTodo): Promise<ITodo>
@@ -7,4 +7,9 @@ export interface IRepositoryTodo {
   deleteTodoById(id: string): Promise<ITodo>
   deleteTodos(): Promise<void>
   updateTodo(id: string, msg: string): Promise<ITodo>
+}
+
+export interface IRepositoryUser {
+  createUser(user: ICreateUser): Promise<IUser>
+  getUser(username: string): Promise<IUser>
 }
