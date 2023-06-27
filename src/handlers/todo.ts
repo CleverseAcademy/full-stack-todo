@@ -26,8 +26,13 @@ class HandlerTodo implements IHandlerTodo {
   }
 
   async getTodos(_, res: Response): Promise<Response> {
-    // TODO: Handle a todo retrieval request here
-    return res.status(200).end()
+    return this.repo
+      .getTodos()
+      .then((todos) => res.status(200).json(todos).end())
+      .catch((err) => {
+        console.error(`failed to create todo: ${err}`)
+        return res.status(500).json({ error: `failed to get todos` }).end()
+      })
   }
 
   async getTodo(req, res: Response): Promise<Response> {
