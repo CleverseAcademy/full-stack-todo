@@ -1,7 +1,8 @@
+import { PrismaClient } from '@prisma/client'
 import { IRepositoryTodo } from '.'
 import { ICreateTodo, ITodo } from '../entities'
 
-export function newRepositoryTodo(db: TodoStore): IRepositoryTodo {
+export function newRepositoryTodo(db: PrismaClient): IRepositoryTodo {
   return new RepositoryTodo(db)
 }
 
