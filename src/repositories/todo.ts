@@ -1,52 +1,70 @@
-import { v4 } from 'uuid'
 import { IRepositoryTodo } from '.'
-import { ITodo } from '../entities'
-
-export type TodoStore = { [k: ITodo['id']]: ITodo }
+import { ICreateTodo, ITodo } from '../entities'
 
 export function newRepositoryTodo(db: TodoStore): IRepositoryTodo {
   return new RepositoryTodo(db)
 }
 
 class RepositoryTodo implements IRepositoryTodo {
-  private db: TodoStore
+  private db: PrismaClient
 
-  constructor(db: TodoStore) {
-    this.db = { ...db }
+  constructor(db: PrismaClient) {
+    this.db = db
   }
 
-  createTodo(title: string): ITodo {
-    const id = v4()
-    this.db[id] = {
-      id,
-      title,
-    }
-    return this.db[id]
+  async createTodo(arg: ICreateTodo): Promise<ITodo> {
+    return this.db.todo.create({
+      data: arg,
+    })
   }
 
-  getTodoById(id: string): ITodo | undefined {
+  async getTodoById(id: string): Promise<ITodo | null> {
     // TODO: implements a Todo retrieval by ID here
-    return undefined
+    return null
   }
 
-  getTodos(): ITodo[] {
+  async getUserTodoById(where: {
+    ownerId: string
+    id: string
+  }): Promise<ITodo | null> {
+    // TODO: implements a TODO retrieval by ownerId here
+    return null
+  }
+
+  async getTodos(): Promise<ITodo[]> {
     // TODO: implements all Todo(s) retrieval logic here
     return []
   }
 
-  deleteTodoById(id: string): ITodo {
-    const beingDeleted = this.db[id]
+  async getUserTodos(ownerId: string): Promise<ITodo[]> {
+    return this.db.todo.findMany({
+      where: {
+        ownerId,
+      },
+    })
+  }
+
+  async deleteTodoById(id: string): Promise<ITodo> {
     // TODO: implement todo deletion logic here
-
-    return beingDeleted
+    return {
+      id: '000',
+      title: 'ไม่บอกหรอก แบร่',
+      description: null,
+      dueDate: null,
+    }
   }
 
-  deleteTodos() {
-    this.db = {}
+  async deleteTodos() {
+    // TODO: implement a todo truncation logic here
   }
 
-  updateTodo(id: string, title: string): ITodo {
-    // TODO: implement update logic here
-    return this.db[id]
+  async updateTodo(id: string, title: string): Promise<ITodo> {
+    // TODO: implement a todo modification logic here
+    return {
+      id: '000',
+      title: 'ไม่บอกหรอก แบร่',
+      description: null,
+      dueDate: null,
+    }
   }
 }

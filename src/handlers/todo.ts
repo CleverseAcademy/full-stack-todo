@@ -1,6 +1,6 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 
-import { AppRequest, Empty, IHandlerTodo, WithId, WithTodo } from '.'
+import { IHandlerTodo } from '.'
 import { IRepositoryTodo } from '../repositories'
 
 export function newHandlerTodo(repoTodo: IRepositoryTodo): IHandlerTodo {
@@ -14,10 +14,7 @@ class HandlerTodo implements IHandlerTodo {
     this.repo = repo
   }
 
-  async createTodo(
-    req: AppRequest<Empty, WithTodo>,
-    res: Response,
-  ): Promise<Response> {
+  async createTodo(req, res): Promise<Response> {
     // TODO: Handle a todo creation request here
 
     const { title } = req.body
@@ -33,26 +30,17 @@ class HandlerTodo implements IHandlerTodo {
     return res.status(200).end()
   }
 
-  async getTodo(
-    req: AppRequest<WithId, WithTodo>,
-    res: Response,
-  ): Promise<Response> {
+  async getTodo(req, res: Response): Promise<Response> {
     // TODO: Handle a todo retrieval request here
     return res.status(200).end()
   }
 
-  async updateTodo(
-    req: AppRequest<WithId, WithTodo>,
-    res: Response,
-  ): Promise<Response> {
+  async updateTodo(req, res: Response): Promise<Response> {
     // TODO: Handle a todo modification request here
     return res.status(201).end()
   }
 
-  async deleteTodo(
-    req: Request<WithId, WithTodo>,
-    res: Response,
-  ): Promise<Response> {
+  async deleteTodo(req, res: Response): Promise<Response> {
     // TODO: Handle a todo deletion request here
     return res.status(200).end()
   }

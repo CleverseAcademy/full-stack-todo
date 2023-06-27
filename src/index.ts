@@ -1,12 +1,15 @@
 import express from 'express'
 
+import cors from 'cors'
 import { newRepositoryTodo } from './repositories/todo'
 
-import cors from 'cors'
+import { PrismaClient } from '@prisma/client'
 import { newHandlerTodo } from './handlers/todo'
 
 async function main() {
-  const repoTodo = newRepositoryTodo({})
+  const db = new PrismaClient()
+
+  const repoTodo = newRepositoryTodo(db)
   const handlerTodo = newHandlerTodo(repoTodo)
 
   const port = process.env.PORT || 8000

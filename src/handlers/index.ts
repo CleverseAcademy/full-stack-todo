@@ -1,8 +1,11 @@
-import { Request, Response } from 'express'
+import { Express, Request, Response } from 'express'
 import { ITodo } from '../entities'
 
 // Custom Express `Request` (no Query)
-export interface AppRequest<Params, Body> extends Request<Params, any, Body> {}
+export interface AppRequest<Params, Body> extends Express.Request {
+  params: Params
+  body: Body
+}
 
 export interface Empty {}
 
@@ -11,7 +14,6 @@ export interface WithTodo extends Omit<ITodo, 'id'> {}
 export interface WithId {
   id: string
 }
-
 export type HandlerFunc<Req> = (req: Req, res: Response) => Promise<Response>
 
 export interface IHandlerTodo {
