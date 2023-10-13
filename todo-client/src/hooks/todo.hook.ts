@@ -3,7 +3,15 @@ import { getTodos } from '../services/todo'
 import Dto from '../types/todo.dto'
 import FormFields from '../types/todo.form'
 
-const useTodo = () => {
+interface UseTodoHooks {
+  todoList: Dto[] | null
+  isLoading: boolean
+  error: unknown
+  addTodo: (newTodo: FormFields) => Promise<Dto>
+  modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<Dto>
+}
+
+const useTodo = (): UseTodoHooks => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [todoList, setTodoList] = useState<Dto[] | null>(null)
   const [error, setError] = useState<unknown>(null)
