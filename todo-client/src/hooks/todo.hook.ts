@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getTodos } from '../services/todo'
+import { deleteTodo, getTodos, postTodo, updateTodo } from '../services/todo'
 import Dto from '../types/todo.dto'
 import FormFields from '../types/todo.form'
 
@@ -9,6 +9,7 @@ interface UseTodoHooks {
   error: unknown
   addTodo: (newTodo: FormFields) => Promise<Dto>
   modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<Dto>
+  removeTodo: (id: string) => Promise<Dto>
 }
 
 const useTodo = (): UseTodoHooks => {
@@ -30,12 +31,22 @@ const useTodo = (): UseTodoHooks => {
     fetchData()
   }, [])
 
+  const addTodo = (newTodo: FormFields) =>
+    postTodo(newTodo).then((response) => fetchData().then(() => response))
+
+  const modifyTodo = ({ id, ...updatedValue }: Dto) =>
+    updateTodo(id, updatedValue).then((res) => fetchData().then(() => res))
+
+  const removeTodo = (id: string) =>
+    deleteTodo(id).then((res) => fetchData().then(() => res))
+
   return {
     todoList,
     isLoading,
     error,
-    addTodo: () => Promise.resolve({ id: 'mock', title: 'ไม่บอกหรอก แบร่' }),
-    modifyTodo: () => Promise.resolve({ id: 'mock', title: 'ไม่บอกหรอก แบร่' }),
+    addTodo,
+    modifyTodo,
+    removeTodo,
   }
 }
 
