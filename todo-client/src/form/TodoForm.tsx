@@ -1,6 +1,6 @@
 import { Field, Form, FormikProps } from 'formik'
 import TodoFormFields from '../types/todo.form'
-import { TextInput } from './Fields'
+import { DateInput, TextInput } from './Fields'
 import { FormSubmissionType, TodoSubmissionProps } from './TodoFormProps.type'
 
 type TodoFormType = <T extends FormSubmissionType>(
@@ -32,6 +32,25 @@ const TodoForm: TodoFormType = ({ type, errors, touched }) => {
           </div>
           <div className="col-span-2">
             <Field name="title" component={TextInput} />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 text-left">
+          <label htmlFor="description" className="text-lg font-Roboto">
+            Description:
+          </label>
+          <div className="col-span-2">
+            <Field name="description" component={TextInput} />
+          </div>
+        </div>
+        <div className="grid grid-cols-4">
+          <div className="flex flex-col text-left">
+            <label htmlFor="dueDate" className="text-lg font-Roboto">
+              Due Date:
+            </label>
+            {touched.dueDate && errors.dueDate && <p>{errors.dueDate}</p>}
+          </div>
+          <div className="col-span-2">
+            <Field name="dueDate" component={DateInput} />
           </div>
         </div>
         <div className="flex justify-end mt-6">
