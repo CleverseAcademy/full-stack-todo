@@ -1,3 +1,8 @@
 {
-  "conventionalCommits.scopes": ["client", "express"]
+  "conventionalCommits.scopes": [
+    "client",
+    "express",
+    "express.todo",
+    "express.user"
+  ]
 }
