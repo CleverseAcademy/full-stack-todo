@@ -7,22 +7,16 @@ type FormRequiredData<T extends FormSubmissionType> = T extends 'update'
   ? { initialValue: Readonly<TodoDto> }
   : object
 
-type HandlerKeys<T extends FormSubmissionType> = T extends 'create'
-  ? 'submitNewTodo'
+type FormRequiredHandler<T extends FormSubmissionType> = T extends 'create'
+  ? { submitNewTodo: (v: TodoFormFields) => Promise<TodoDto> }
   : T extends 'update'
-  ? 'updateExistingTodo'
-  : 'deleteTodo'
-
-type HandlerFunc<T extends FormSubmissionType> = T extends 'create' | 'update'
-  ? (v: T extends 'create' ? TodoFormFields : TodoDto) => Promise<TodoDto>
-  : (id: string) => Promise<void>
+  ? { updateExistingTodo: (v: TodoDto) => Promise<TodoDto> }
+  : { deleteTodo: (id: string) => Promise<TodoDto> }
 
 export type TodoSubmissionProps<
   T extends FormSubmissionType = 'create'
 > = Readonly<
-  {
-    [k in HandlerKeys<T>]: HandlerFunc<T>
-  } &
+  FormRequiredHandler<T> &
     FormRequiredData<T> & {
       type: T
     }
