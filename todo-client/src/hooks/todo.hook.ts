@@ -1,50 +1,44 @@
-import { useEffect, useState } from 'react'
-import { deleteTodo, getTodos, postTodo, updateTodo } from '../services/todo'
+import { useCallback, useEffect, useState } from 'react'
+import { deleteTodo, getTodo, updateTodo } from '../services/todo'
 import Dto from '../types/todo.dto'
-import FormFields from '../types/todo.form'
 
 interface UseTodoHooks {
-  todoList: Dto[] | null
+  todo: Dto | null
   isLoading: boolean
   error: unknown
-  addTodo: (newTodo: FormFields) => Promise<Dto>
   modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<Dto>
   removeTodo: (id: string) => Promise<Dto>
 }
 
-const useTodo = (): UseTodoHooks => {
+const useTodo = (id: string): UseTodoHooks => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [todoList, setTodoList] = useState<Dto[] | null>(null)
+  const [todo, setTodo] = useState<Dto | null>(null)
   const [error, setError] = useState<unknown>(null)
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true)
     try {
-      setTodoList(await getTodos())
+      setTodo(await getTodo(id))
     } catch (error) {
       setError(error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [id])
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
-  const addTodo = (newTodo: FormFields) =>
-    postTodo(newTodo).then((response) => fetchData().then(() => response))
-
-  const modifyTodo = ({ id, ...updatedValue }: Dto) =>
+  const modifyTodo = (updatedValue: Dto) =>
     updateTodo(id, updatedValue).then((res) => fetchData().then(() => res))
 
-  const removeTodo = (id: string) =>
+  const removeTodo = () =>
     deleteTodo(id).then((res) => fetchData().then(() => res))
 
   return {
-    todoList,
+    todo,
     isLoading,
     error,
-    addTodo,
     modifyTodo,
     removeTodo,
   }
