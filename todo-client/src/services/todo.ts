@@ -7,6 +7,11 @@ type FetchTodoListFunc = () => Promise<Dto[]>
 export const getTodos: FetchTodoListFunc = () =>
   axios.get<Dto[]>(`${API_HOST}/todo`).then((res) => res.data)
 
+type FetchTodoFunc = (id: string) => Promise<Dto>
+export const getTodo: FetchTodoFunc = async (id) => {
+  // TODO: add a post api request here
+  return { id: '000', title: 'ไม่บอก แบร่' }
+}
 type PostTodoFunc = (data: FormFields) => Promise<Dto>
 export const postTodo: PostTodoFunc = async (newTodo: FormFields) => {
   // TODO: add a post api request here
