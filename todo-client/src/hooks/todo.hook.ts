@@ -8,7 +8,7 @@ interface UseTodoHooks {
   isLoading: boolean
   error: unknown
   modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<void>
-  removeTodo: (id: string) => Promise<Dto>
+  removeTodo: () => Promise<void>
 }
 
 const useTodo = (id: string): UseTodoHooks => {
@@ -35,8 +35,7 @@ const useTodo = (id: string): UseTodoHooks => {
   const modifyTodo = (updatedValue: Dto) =>
     updateTodo(id, updatedValue).then(() => navigate('/'))
 
-  const removeTodo = () =>
-    deleteTodo(id).then((res) => fetchData().then(() => res))
+  const removeTodo = () => deleteTodo(id).then(() => location.reload())
 
   return {
     todo,
