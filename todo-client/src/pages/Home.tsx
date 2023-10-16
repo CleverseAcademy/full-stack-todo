@@ -1,5 +1,5 @@
 import { withFormik } from 'formik'
-import useTodo from '../hooks/todo.hook'
+import useTodoList from '../hooks/todoList.hook'
 import { isDataIsReady } from '../types/typecheck'
 import { TodoSubmissionProps } from '../form/TodoFormProps.type'
 import TodoFormFields from '../types/todo.form'
@@ -20,7 +20,7 @@ const NewTodoForm = withFormik<TodoSubmissionProps<'create'>, TodoFormFields>({
 })(TodoForm<'create'>)
 
 const Home = () => {
-  const { addTodo, isLoading, error, todoList } = useTodo()
+  const { addTodo, isLoading, error, todoList } = useTodoList()
 
   if (!isDataIsReady(todoList, isLoading, error)) return `${error}`
 
