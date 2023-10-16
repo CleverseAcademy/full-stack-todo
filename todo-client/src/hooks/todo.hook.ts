@@ -1,19 +1,22 @@
 import { useCallback, useEffect, useState } from 'react'
 import { deleteTodo, getTodo, updateTodo } from '../services/todo'
 import Dto from '../types/todo.dto'
+import { useNavigate } from 'react-router-dom'
 
 interface UseTodoHooks {
   todo: Dto | null
   isLoading: boolean
   error: unknown
-  modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<Dto>
+  modifyTodo: ({ id, ...updatedValue }: Dto) => Promise<void>
   removeTodo: (id: string) => Promise<Dto>
 }
 
 const useTodo = (id: string): UseTodoHooks => {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [todo, setTodo] = useState<Dto | null>(null)
   const [error, setError] = useState<unknown>(null)
+
   const fetchData = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -30,7 +33,7 @@ const useTodo = (id: string): UseTodoHooks => {
   }, [fetchData])
 
   const modifyTodo = (updatedValue: Dto) =>
-    updateTodo(id, updatedValue).then((res) => fetchData().then(() => res))
+    updateTodo(id, updatedValue).then(() => navigate('/'))
 
   const removeTodo = () =>
     deleteTodo(id).then((res) => fetchData().then(() => res))
