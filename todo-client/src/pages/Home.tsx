@@ -4,6 +4,7 @@ import { isDataIsReady } from '../types/typecheck'
 import { TodoSubmissionProps } from '../form/TodoFormProps.type'
 import TodoFormFields from '../types/todo.form'
 import TodoForm from '../form/TodoForm'
+import TodoCard from '../components/TodoCard'
 
 const NewTodoForm = withFormik<TodoSubmissionProps<'create'>, TodoFormFields>({
   handleSubmit: (values, { props: { submitNewTodo } }) => submitNewTodo(values),
@@ -27,11 +28,12 @@ const Home = () => {
     <>
       <NewTodoForm type="create" submitNewTodo={addTodo} />
 
-      {todoList.map((todoContent) => (
-        <div key={todoContent.id}>
-          <p>{todoContent.title}</p>
-        </div>
-      ))}
+      <div className="flex flex-col gap-7 w-2/3 mx-auto">
+        <p className="font-bold text-2xl text-left">Todo List</p>
+        {todoList.map((todoContent) => (
+          <TodoCard key={todoContent.id} todo={todoContent} />
+        ))}
+      </div>
     </>
   )
 }
